@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -214,8 +215,16 @@ fun PlaceholderImagen(texto: String, modifier: Modifier = Modifier) {
 /** Primera imagen del evento o un placeholder con el tipo. */
 @Composable
 fun PortadaEvento(evento: Evento, modifier: Modifier = Modifier) {
+    val primeraRes = evento.imagenesRes.firstOrNull()
     val primera = evento.imagenes.firstOrNull()
-    if (primera != null) {
+    if (primeraRes != null) {
+        Image(
+            painter = painterResource(primeraRes),
+            contentDescription = evento.nombre,
+            contentScale = ContentScale.Crop,
+            modifier = modifier.clip(RoundedCornerShape(16.dp))
+        )
+    } else if (primera != null) {
         ImagenUri(primera, modifier = modifier.clip(RoundedCornerShape(16.dp)), descripcion = evento.nombre)
     } else {
         PlaceholderImagen(evento.tipo, modifier)

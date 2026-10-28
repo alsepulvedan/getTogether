@@ -1,5 +1,6 @@
 package com.example.gettogether.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.gettogether.viewmodel.EventoViewModel
 
@@ -51,10 +54,20 @@ fun InformacionEvento(
             EncabezadoEvento(evento)
 
             TituloSeccion("Imágenes")
-            if (evento.imagenes.isEmpty()) {
+            if (evento.imagenesRes.isEmpty() && evento.imagenes.isEmpty()) {
                 PlaceholderImagen("Sin imágenes", Modifier.fillMaxWidth().height(140.dp))
             } else {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Imágenes del proyecto (res/drawable)
+                    items(evento.imagenesRes) { imagen ->
+                        Image(
+                            painter = painterResource(imagen),
+                            contentDescription = evento.nombre,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(160.dp).clip(RoundedCornerShape(12.dp))
+                        )
+                    }
+                    // Imágenes adjuntadas desde el celular al crear el evento
                     items(evento.imagenes) { uri ->
                         ImagenUri(uri, Modifier.size(160.dp).clip(RoundedCornerShape(12.dp)), evento.nombre)
                     }
@@ -68,6 +81,15 @@ fun InformacionEvento(
             Text(evento.ubicacion)
             if (evento.referencia.isNotBlank()) {
                 Text(evento.referencia, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            if (evento.latitud != null && evento.longitud != null) {
+                Spacer(Modifier.height(8.dp))
+                MapaEvento(
+                    latitud = evento.latitud,
+                    longitud = evento.longitud,
+                    titulo = evento.nombre,
+                    referencia = evento.referencia
+                )
             }
 
             TituloSeccion("Etiquetas")

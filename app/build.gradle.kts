@@ -1,3 +1,11 @@
+import java.util.Properties
+
+// Lee la API key de Google Maps desde local.properties (ese archivo NO se sube a GitHub)
+val localProperties = Properties().apply {
+    val archivo = rootProject.file("local.properties")
+    if (archivo.exists()) archivo.inputStream().use { load(it) }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -17,6 +25,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Se usa en AndroidManifest.xml como ${MAPS_API_KEY}
+        manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
     }
 
     buildTypes {
@@ -49,6 +60,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material.icons.core)
+    // Google Maps para Compose (mapa en la pantalla Información del evento)
+    implementation(libs.maps.compose)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

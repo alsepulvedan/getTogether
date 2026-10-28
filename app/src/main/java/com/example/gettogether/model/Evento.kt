@@ -16,9 +16,14 @@ data class Evento(
     val edadMaxima: Int = 99,
     val cupo: Int = 20,
     val asistentes: List<String> = emptyList(),
-    val imagenes: List<String> = emptyList(), // Uris de imágenes adjuntas
+    val imagenes: List<String> = emptyList(),       // Uris de imágenes adjuntas desde el celular
+    val imagenesRes: List<Int> = emptyList(),       // Imágenes de res/drawable (R.drawable.xxx)
+    val latitud: Double? = null,                    // Coordenadas para el mapa
+    val longitud: Double? = null,
     val creador: String = ""
 ) {
+    val tieneCoordenadas: Boolean get() = latitud != null && longitud != null
+
     val rangoEtario: String get() = "$edadMinima - $edadMaxima años"
     val cuposDisponibles: Int get() = (cupo - asistentes.size).coerceAtLeast(0)
 }
