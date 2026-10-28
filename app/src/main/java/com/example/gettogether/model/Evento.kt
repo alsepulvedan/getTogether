@@ -17,6 +17,7 @@ data class Evento(
     val cupo: Int = 20,
     val asistentes: List<String> = emptyList(),
     val imagenes: List<String> = emptyList(),       // Uris de imágenes adjuntas desde el celular
+    val portadaRes: Int? = null,                    // Imagen de la tarjeta (Inicio, Bandeja, Buscar)
     val imagenesRes: List<Int> = emptyList(),       // Imágenes de res/drawable (R.drawable.xxx)
     val latitud: Double? = null,                    // Coordenadas para el mapa
     val longitud: Double? = null,

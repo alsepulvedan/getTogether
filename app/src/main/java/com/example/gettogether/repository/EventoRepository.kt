@@ -97,7 +97,8 @@ object EventoRepository {
             etiquetas = listOf("pokemon", "incursiones", "juegos"),
             cupo = 20, asistentes = listOf("juan", "luis", "sofia", "nicolas"),
             latitud = null, longitud = null,           // TODO: coordenadas
-            imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
+            portadaRes = R.drawable.pokemon_portada,                       // tarjeta
+            imagenesRes = listOf(R.drawable.pokemon_1), // Ver info
             creador = "juan"
         ),
         Evento(

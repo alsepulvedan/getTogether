@@ -215,7 +215,7 @@ fun PlaceholderImagen(texto: String, modifier: Modifier = Modifier) {
 /** Primera imagen del evento o un placeholder con el tipo. */
 @Composable
 fun PortadaEvento(evento: Evento, modifier: Modifier = Modifier) {
-    val primeraRes = evento.imagenesRes.firstOrNull()
+    val primeraRes = evento.portadaRes ?: evento.imagenesRes.firstOrNull()
     val primera = evento.imagenes.firstOrNull()
     if (primeraRes != null) {
         Image(
