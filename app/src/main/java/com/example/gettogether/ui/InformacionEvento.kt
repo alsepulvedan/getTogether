@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -57,19 +56,36 @@ fun InformacionEvento(
             if (evento.imagenesRes.isEmpty() && evento.imagenes.isEmpty()) {
                 PlaceholderImagen("Sin imágenes", Modifier.fillMaxWidth().height(140.dp))
             } else {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                val totalImagenes = evento.imagenesRes.size + evento.imagenes.size
+                // Una sola imagen ocupa todo el ancho; si hay varias, 85 % para que se note que se desliza
+                val anchoImagen = if (totalImagenes == 1) 1f else 0.85f
+
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     // Imágenes del proyecto (res/drawable)
                     items(evento.imagenesRes) { imagen ->
                         Image(
                             painter = painterResource(imagen),
                             contentDescription = evento.nombre,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.size(160.dp).clip(RoundedCornerShape(12.dp))
+                            modifier = Modifier
+                                .fillParentMaxWidth(anchoImagen)
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(12.dp))
                         )
                     }
                     // Imágenes adjuntadas desde el celular al crear el evento
                     items(evento.imagenes) { uri ->
-                        ImagenUri(uri, Modifier.size(160.dp).clip(RoundedCornerShape(12.dp)), evento.nombre)
+                        ImagenUri(
+                            uri,
+                            Modifier
+                                .fillParentMaxWidth(anchoImagen)
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(12.dp)),
+                            evento.nombre
+                        )
                     }
                 }
             }

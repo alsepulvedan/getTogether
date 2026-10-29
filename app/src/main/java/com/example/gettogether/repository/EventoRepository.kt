@@ -108,7 +108,8 @@ object EventoRepository {
             etiquetas = listOf("futbol", "pichanga"),
             cupo = 14, asistentes = listOf("matias", "felipe", "diego"),
             latitud = null, longitud = null,           // TODO: coordenadas
-            imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
+            portadaRes = R.drawable.pichanga_portada,                       // tarjeta
+            imagenesRes = listOf(R.drawable.pichanga_2), // Ver info
             creador = "matias"
         ),
         Evento(
@@ -119,7 +120,8 @@ object EventoRepository {
             edadMinima = 20, edadMaxima = 35, cupo = 8,
             asistentes = listOf("camila", "ignacio"),
             latitud = null, longitud = null,           // TODO: coordenadas
-            imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
+            portadaRes = R.drawable.juegos_portada,                       // tarjeta
+            imagenesRes = listOf(R.drawable.juegos_1), // Ver info
             creador = "camila"
         ),
         Evento(
