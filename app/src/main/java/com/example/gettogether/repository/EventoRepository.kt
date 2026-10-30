@@ -96,7 +96,7 @@ object EventoRepository {
             ubicacion = "San Joaquín", referencia = "Metro Macul",
             etiquetas = listOf("pokemon", "incursiones", "juegos"),
             cupo = 20, asistentes = listOf("juan", "luis", "sofia", "nicolas"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.50931324626522, longitud = -70.58944158971403,
             portadaRes = R.drawable.pokemon_portada,                       // tarjeta
             imagenesRes = listOf(R.drawable.pokemon_1), // Ver info
             creador = "juan"
@@ -107,7 +107,7 @@ object EventoRepository {
             ubicacion = "Ñuñoa", referencia = "Estadio Nacional",
             etiquetas = listOf("futbol", "pichanga"),
             cupo = 14, asistentes = listOf("matias", "felipe", "diego"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.464625017366615, longitud = -70.61078671991382,
             portadaRes = R.drawable.pichanga_portada,                       // tarjeta
             imagenesRes = listOf(R.drawable.pichanga_2), // Ver info
             creador = "matias"
@@ -119,7 +119,7 @@ object EventoRepository {
             etiquetas = listOf("juegos de mesa", "catan"),
             edadMinima = 20, edadMaxima = 35, cupo = 8,
             asistentes = listOf("camila", "ignacio"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.4282784176981, longitud = -70.6194141419454,
             portadaRes = R.drawable.juegos_portada,                       // tarjeta
             imagenesRes = listOf(R.drawable.juegos_1), // Ver info
             creador = "camila"
@@ -130,7 +130,7 @@ object EventoRepository {
             ubicacion = "Providencia", referencia = "Plaza Caupolicán",
             etiquetas = listOf("trekking", "cerro"),
             cupo = 15, asistentes = listOf("demo", "juan", "sofia"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud =-33.43058920209797, longitud = -70.6357201938626,
             imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
             creador = "sofia"
         ),
@@ -140,7 +140,7 @@ object EventoRepository {
             ubicacion = "Santiago Centro", referencia = "Biblioteca Nacional",
             etiquetas = listOf("estudio", "kotlin"),
             cupo = 6, asistentes = listOf("demo", "luis"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.44190000767134,  longitud = -70.64558334012956,
             imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
             creador = "luis"
         ),
@@ -150,7 +150,7 @@ object EventoRepository {
             ubicacion = "Barrio Italia", referencia = "Metro Santa Isabel",
             etiquetas = listOf("musica", "tocata"),
             cupo = 40, asistentes = listOf("demo", "nicolas", "camila", "felipe"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.44596797815986, longitud = -70.6256457717317,
             imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
             creador = "nicolas"
         ),
@@ -160,7 +160,7 @@ object EventoRepository {
             ubicacion = "La Florida", referencia = "Mall Plaza Vespucio",
             etiquetas = listOf("comida", "completos"),
             cupo = 12, asistentes = listOf("demo", "diego"),
-            latitud = null, longitud = null,           // TODO: coordenadas
+            latitud = -33.51456411781995,  longitud = -70.59548656291403,
             imagenesRes = listOf(/* R.drawable.xxx */), // TODO: imágenes
             creador = "diego"
         )
