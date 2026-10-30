@@ -1,6 +1,7 @@
 package com.example.gettogether.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gettogether.model.Ajustes
 import com.example.gettogether.model.LoginForm
 import com.example.gettogether.model.RegistroForm
@@ -8,15 +9,43 @@ import com.example.gettogether.model.RegistroFormError
 import com.example.gettogether.model.Usuario
 import com.example.gettogether.repository.UsuarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /** Lógica de Login, Registro, Cuenta y Ajustes. */
-class UsuarioViewModel : ViewModel() {
+class UsuarioViewModel(private val repository: UsuarioRepository = UsuarioRepository()) : ViewModel() {
 
     private val regexCorreo = Regex("^[\\w.-]+@[\\w.-]+\\.\\w+$")
 
-    val usuarioActual: Usuario? get() = UsuarioRepository.usuarioActual
-    val ajustes: Ajustes get() = UsuarioRepository.ajustes
+    // =========================================================
+    // NUEVA LÓGICA DE SESIÓN CON ROOM
+    // =========================================================
+    val sesionActiva = repository.usuarioActivo.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
+
+    fun loginSimulado(correo: String, nombre: String) {
+        viewModelScope.launch {
+            repository.iniciarSesion(correo, nombre)
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.cerrarSesion()
+        }
+    }
+
+    // =========================================================
+    // LÓGICA ANTERIOR
+    // =========================================================
+
+    val usuarioActual: Usuario? get() = repository.usuarioActual
+    val ajustes: Ajustes get() = repository.ajustes
 
     // ---------- Login ----------
     private val _login = MutableStateFlow(LoginForm())
@@ -34,7 +63,7 @@ class UsuarioViewModel : ViewModel() {
             _loginError.value = "Completa correo y contraseña"
             return false
         }
-        return if (UsuarioRepository.login(f.correo, f.password)) {
+        return if (repository.login(f.correo, f.password)) {
             _loginError.value = null
             _login.value = LoginForm()
             true
@@ -66,7 +95,7 @@ class UsuarioViewModel : ViewModel() {
         if (!errores.esValido) return false
 
         val f = _registro.value
-        UsuarioRepository.registrar(
+        repository.registrar(
             Usuario(
                 nombre = f.nombre.trim(),
                 nombreUsuario = f.nombreUsuario.trim(),
@@ -85,12 +114,12 @@ class UsuarioViewModel : ViewModel() {
         nombreUsuario = when {
             f.nombreUsuario.isBlank() -> "Elige un nombre de usuario"
             f.nombreUsuario.contains(" ") -> "No puede tener espacios"
-            UsuarioRepository.existeNombreUsuario(f.nombreUsuario) -> "Ese nombre de usuario ya existe"
+            repository.existeNombreUsuario(f.nombreUsuario) -> "Ese nombre de usuario ya existe"
             else -> null
         },
         correo = when {
             !f.correo.trim().matches(regexCorreo) -> "Correo inválido"
-            UsuarioRepository.existeCorreo(f.correo) -> "Ese correo ya está registrado"
+            repository.existeCorreo(f.correo) -> "Ese correo ya está registrado"
             else -> null
         },
         edad = f.edad.toIntOrNull().let { if (it == null || it !in 18..99) "Edad entre 18 y 99" else null },
@@ -104,7 +133,7 @@ class UsuarioViewModel : ViewModel() {
     val perfil: StateFlow<Usuario> = _perfil
 
     fun cargarPerfil() {
-        _perfil.value = UsuarioRepository.usuarioActual ?: Usuario()
+        _perfil.value = repository.usuarioActual ?: Usuario()
     }
 
     fun onPerfilChange(cambio: (Usuario) -> Usuario) {
@@ -115,20 +144,20 @@ class UsuarioViewModel : ViewModel() {
     fun guardarPerfil(): String? {
         val p = _perfil.value
         val error = when {
-            UsuarioRepository.usuarioActual == null -> "Debes iniciar sesión"
+            repository.usuarioActual == null -> "Debes iniciar sesión"
             p.nombre.isBlank() -> "El nombre es obligatorio"
             !p.correo.trim().matches(regexCorreo) -> "Correo inválido"
             p.edad != null && p.edad !in 18..99 -> "Edad entre 18 y 99"
             else -> null
         }
-        if (error == null) UsuarioRepository.actualizarPerfil(p)
+        if (error == null) repository.actualizarPerfil(p)
         return error
     }
 
     // ---------- Ajustes ----------
     fun onAjustesChange(cambio: (Ajustes) -> Ajustes) {
-        UsuarioRepository.actualizarAjustes(cambio(UsuarioRepository.ajustes))
+        repository.actualizarAjustes(cambio(repository.ajustes))
     }
 
-    fun cerrarSesion() = UsuarioRepository.cerrarSesion()
+    fun cerrarSesion() = logout()
 }
