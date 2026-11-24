@@ -106,6 +106,8 @@ fun InformacionEvento(
                     titulo = evento.nombre,
                     referencia = evento.referencia
                 )
+                TituloSeccion("Clima ahora")
+                TarjetaClima(evento.latitud, evento.longitud)
             }
 
             TituloSeccion("Etiquetas")

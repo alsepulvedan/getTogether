@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material.icons.core)
 
+    // Retrofit: API externa (Open-Meteo) y después el microservicio
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
     // Google Maps para Compose (mapa en la pantalla Información del evento)
     implementation(libs.maps.compose)
 
